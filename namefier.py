@@ -12,9 +12,11 @@ def mongo_connection():
 
 def namefy(apps):
     ec2 = ec2_connection()
+    tags = [tag.value for tag in ec2.get_all_tags() if tag.name == "Name"]
     for app in apps:
         for unit in app["units"]:
-            ec2.create_tags([unit["instanceid"]], {"Name": unit["name"]})
+            if unit["name"] not in tags:
+                ec2.create_tags([unit["instanceid"]], {"Name": unit["name"]})
 
 
 def main():

@@ -29,5 +29,22 @@ class NamefyTest(unittest.TestCase):
         namefy(apps)
         conn.create_tags.assert_called_with(["i-1"], {"Name": "vm1"})
 
+    @mock.patch("boto.connect_ec2")
+    def test_namefy_when_tag_already_exisits(self, ec2):
+        class Tag(object):
+            name = "Name"
+            value = "vm1"
+
+        conn = ec2.return_value
+        conn.get_all_tags.return_value = [Tag()]
+        apps = [{
+            "units": [
+                {"name": "vm1", "instanceid": "i-1"},
+                {"name": "vm2", "instanceid": "i-2"},
+            ]
+        }]
+        namefy(apps)
+        conn.create_tags.assert_called_once_with(["i-2"], {"Name": "vm2"})
+
 
 unittest.main()
