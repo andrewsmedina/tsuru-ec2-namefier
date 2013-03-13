@@ -1,9 +1,15 @@
+from boto import ec2
 import pymongo
-import boto
+import os
 
 
 def ec2_connection():
-    return boto.connect_ec2()
+    region = os.environ.get("AWS_REGION", "sa-east-1")
+    access = os.environ.get("AWS_ACCESS_KEY_ID", "")
+    secret = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
+    return ec2.connect_to_region(region,
+                                 aws_access_key_id=access,
+                                 aws_secret_access_key=secret)
 
 
 def mongo_connection():

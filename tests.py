@@ -5,10 +5,12 @@ from namefier import ec2_connection, mongo_connection, namefy
 
 
 class Ec2Test(unittest.TestCase):
-    @mock.patch("boto.connect_ec2")
+    @mock.patch("boto.ec2.connect_to_region")
     def test_ec2_connection(self, conn):
         ec2_connection()
-        conn.assert_called_with()
+        conn.assert_called_with('sa-east-1',
+                                aws_access_key_id='',
+                                aws_secret_access_key='')
 
 
 class MongoTest(unittest.TestCase):
@@ -18,7 +20,7 @@ class MongoTest(unittest.TestCase):
 
 
 class NamefyTest(unittest.TestCase):
-    @mock.patch("boto.connect_ec2")
+    @mock.patch("boto.ec2.connect_to_region")
     def test_namefy(self, ec2):
         conn = ec2.return_value
         apps = [{
@@ -29,7 +31,7 @@ class NamefyTest(unittest.TestCase):
         namefy(apps)
         conn.create_tags.assert_called_with(["i-1"], {"Name": "vm1"})
 
-    @mock.patch("boto.connect_ec2")
+    @mock.patch("boto.ec2.connect_to_region")
     def test_namefy_when_tag_already_exisits(self, ec2):
         class Tag(object):
             name = "Name"
