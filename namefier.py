@@ -10,7 +10,7 @@ def mongo_connection():
     return pymongo.MongoClient('localhost', 27017)
 
 
-def namefier(apps):
+def namefy(apps):
     ec2 = ec2_connection()
     for app in apps:
         for unit in app["units"]:
@@ -19,7 +19,7 @@ def namefier(apps):
 
 def main():
     apps = mongo_connection().tsuru.apps.find()
-    namefier(apps)
+    namefy(apps)
 
 
 if __name__ == "__main__":

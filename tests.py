@@ -1,7 +1,7 @@
 import unittest
 import mock
 
-from namefier import ec2_connection, mongo_connection, namefier
+from namefier import ec2_connection, mongo_connection, namefy
 
 
 class Ec2Test(unittest.TestCase):
@@ -17,16 +17,16 @@ class MongoTest(unittest.TestCase):
         mongo_connection()
 
 
-class NamefierTest(unittest.TestCase):
+class NamefyTest(unittest.TestCase):
     @mock.patch("boto.connect_ec2")
-    def test_namefier(self, ec2):
+    def test_namefy(self, ec2):
         conn = ec2.return_value
         apps = [{
             "units": [
                 {"name": "vm1", "instanceid": "i-1"}
             ]
         }]
-        namefier(apps)
+        namefy(apps)
         conn.create_tags.assert_called_with(["i-1"], {"Name": "vm1"})
 
 
