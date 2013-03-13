@@ -27,7 +27,7 @@ class NamefierTest(unittest.TestCase):
             ]
         }]
         namefier(apps)
-        conn.create_tags.assert_called_with(["i-1"], {"name": "vm1"})
+        conn.create_tags.assert_called_with(["i-1"], {"Name": "vm1"})
 
 
 unittest.main()

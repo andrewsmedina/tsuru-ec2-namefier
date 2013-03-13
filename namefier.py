@@ -14,7 +14,7 @@ def namefier(apps):
     ec2 = ec2_connection()
     for app in apps:
         for unit in app["units"]:
-            ec2.create_tags([unit["instanceid"]], {"name": unit["name"]})
+            ec2.create_tags([unit["instanceid"]], {"Name": unit["name"]})
 
 
 def main():
